@@ -1,10 +1,10 @@
 # Meta Data for SEO
 
 ## Homepage
-title = "Doks"
+title = "Streptococcus Pneumoniae"
 titleSeparator = "-"
-titleAddition = "Modern Documentation Theme"
-description = "Doks is a Hugo theme for building secure, fast, and SEO-ready documentation websites, which you can easily update and customize."
+titleAddition = "Disentangling penicillin resistance and compensatory adaption in pneumococci by combining genomics and molecular microbiology"
+description = "Test"
 
 ## Documentation
 # docsVersion = "0.3"
@@ -23,7 +23,7 @@ twitterCreator = "@henkverlinde"
 # schemaType = "Person"
 schemaType = "Organization"
 schemaName = "Doks"
-schemaAuthor = "Henk Verlinde"
+schemaAuthor = "Magnus Nygård Osnes"
 schemaAuthorTwitter = "https://twitter.com/henkverlinde"
 schemaAuthorLinkedIn = "https://www.linkedin.com/in/henkverlinde/"
 schemaAuthorGitHub = "https://github.com/h-enk"
