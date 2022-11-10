@@ -12,8 +12,8 @@ description = "Test"
 ## Open Graph
 images = ["doks.png"]
 ogLocale = "en_US"
-domainTLD = "doks.netlify.app"
-titleHome = "Doks Theme"
+domainTLD = "disentangling-streptococcus-amr.netlify.app"
+titleHome = "Streptococcus Pneumoniae AMR"
 
 ## Twitter Cards
 twitterSite = "@getdoks"
@@ -21,12 +21,12 @@ twitterCreator = "@henkverlinde"
 
 ## JSON-LD
 # schemaType = "Person"
-schemaType = "Organization"
+schemaType = ""
 schemaName = "Doks"
 schemaAuthor = "Magnus Nygård Osnes"
-schemaAuthorTwitter = "https://twitter.com/henkverlinde"
-schemaAuthorLinkedIn = "https://www.linkedin.com/in/henkverlinde/"
-schemaAuthorGitHub = "https://github.com/h-enk"
+schemaAuthorTwitter = "https://twitter.com/MagnusOsnes"
+schemaAuthorLinkedIn = "https://www.linkedin.com/in/magnus-nyg%C3%A5rd-osnes-22655922b"
+schemaAuthorGitHub = "https://github.com/magnusnosnes/Disentangling_Streptococcus_AMR"
 schemaLocale = "en-US"
 schemaLogo = "logo-doks.png"
 schemaLogoWidth = 512
