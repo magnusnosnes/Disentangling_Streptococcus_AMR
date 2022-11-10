@@ -1,7 +1,7 @@
 # Meta Data for SEO
 
 ## Homepage
-title = "Streptococcus Pneumoniae"
+title = "Disentangling"
 titleSeparator = "-"
 titleAddition = "Disentangling penicillin resistance and compensatory adaption in pneumococci by combining genomics and molecular microbiology"
 description = "Test"
@@ -17,7 +17,7 @@ titleHome = "Streptococcus Pneumoniae AMR"
 
 ## Twitter Cards
 twitterSite = "@getdoks"
-twitterCreator = "@henkverlinde"
+twitterCreator = "@MagnusOsnes"
 
 ## JSON-LD
 # schemaType = "Person"
