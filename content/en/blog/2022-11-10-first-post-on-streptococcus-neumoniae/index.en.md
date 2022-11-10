@@ -6,7 +6,7 @@ date: 2020-11-04T09:19:42+01:00
 lastmod: 2020-11-04T09:19:42+01:00
 draft: false
 weight: 50
-images: ["doks.png"]
+images: ["Abstract_image.png"]
 categories: ["News"]
 tags: ["test_tag", "test_tag2"]
 contributors: ["Magnus Osnes"]
@@ -28,3 +28,7 @@ plot(2,2)
 ```
 
 <img src="{{< blogdown/postref >}}index.en_files/figure-html/remedy001-2.png" width="672" />
+
+
+![Link to picture](./Abstract_image.png "Test")
+
