@@ -29,6 +29,10 @@ plot(2,2)
 
 <img src="{{< blogdown/postref >}}index.en_files/figure-html/remedy001-2.png" width="672" />
 
+```r
+#Test
+```
 
-![Link to picture](./Abstract_image.png "Test")
+
+![Intergalactic train](intergalactic4.png "Test")
 
