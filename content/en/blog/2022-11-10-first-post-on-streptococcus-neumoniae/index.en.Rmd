@@ -1,29 +1,249 @@
 ---
-title: "Testing a first post 👋"
-description: "Testing "
+title: "An overview of the data"
+description: "Overview of the data"
 excerpt: ""
 date: 2020-11-04T09:19:42+01:00
 lastmod: 2020-11-04T09:19:42+01:00
 draft: false
 weight: 50
-images: ["Abstract_image.png"]
+images: ["Samples.png"]
 categories: ["News"]
-tags: ["test_tag", "test_tag2"]
+tags: []
 contributors: ["Magnus Osnes"]
 pinned: false
 homepage: false
 toc: true
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE,collapse=T, cache=T, 'styler', tidy.opts=list(strict=T))
+```
 
-```{r remedy001}
-plot(seq(0,1,100), seq(0,1,100))
+```{r remedy001, include=F}
+library(readxl)
+library(ggplot2)
+library(lubridate)
+setwd("/Users/magnusnygardosnes/Dropbox/Postdoc_pneumococcus/00_Collection_overview")
+SA = readxl::read_xlsx("GPSC_South_Africa.xlsx")
+Maela = readxl::read_xls("maela_PLOS_Genetics_PEN.xls")
+Norway_routine = read_xlsx("/Users/magnusnygardosnes/Dropbox/Postdoc_pneumococcus/00_Collection_overview/Nor2018-2022_metadata.xlsx")
+Norway_historic = readxl::read_xlsx("Pneumoprosjekt_NMBU_FHI_nummerert_eksportert.xlsx")
+USA = readxl::read_xlsx("USA_12864_2017_4017_MOESM1_ESM.xlsx")
+
+#The data originated from the following studies:
+#studies = list(Maela="10.1371/journal.pgen.1004547",USA="")
 
 
-plot(2,2)
+#South Africa is done.
+SA_for_study = SA
+SA_for_study = SA_for_study[,c("ERR","Year","Country","Penicillin")]
+
+
+#1. Currently missing data on year of isolation.
+#2. Need to reorder columns
+#3. Need to handle MIC values above and below the thresholds.
+# Check how to they handled <0.06 in the original study. 
+Maela_for_study = Maela
+Maela_for_study = Maela_for_study[,c("ENA_accession_no", "penicillin_MIC(µg/mL)")]
+Maela_for_study$Country = rep("Maela", nrow(Maela_for_study))
+#Extra info Maela
+maela_extra = read_xlsx("/Users/magnusnygardosnes/Desktop/Postdoc/Pneumo/pneumo_project_Maela/41588_2014_BFng2895_MOESM61_ESM.xlsx")
+match_indexes = unlist(lapply(Maela_for_study$ENA_accession_no,
+                              FUN = function(x) which(x == maela_extra$ENA_accession_no)))
+Maela_for_study$Year = x=decimal_date(as.Date(maela_extra$date_of_collection[match_indexes]))
+Maela_for_study = Maela_for_study[,c(1,4,3,2)]
+
+#The USA
+#Was used to train a pbp model in
+# https://doi.org/10.1186/s12864-017-4017-7
+#But originally comes from these two studies
+# https://doi.org/10.1128/mBio.00756-16
+# https://doi.org/10.1016/j.cmi.2015.08.027
+#1. Currently missing data on year of isolation.
+#2. Need to reorder columns
+#3. Need to handle MIC values above and below the thresholds.
+#Notes: They used multiple platforms: HiSeq and MiSeq.
+#THe metadata of USA is also way too long, must remove the fasta files not used. 
+USA_for_study = USA
+USA_for_study = USA_for_study[,c("Biosample Accession","PEN")]
+USA_for_study$Country = rep("USA", nrow(USA_for_study))
+#Need additional metadata for dates
+usa_extra1 = read_xlsx("/Users/magnusnygardosnes/Desktop/Postdoc/Pneumo/pneumo_project_USA_ERR/Extra_1_USA.xlsx",skip=1,col_names=c("CDC_lab_id","Accession","Year"))
+usa_extra1$Accession
+indexes_1 = unlist(lapply(USA_for_study$`Biosample Accession`, FUN=
+                            function(x) ifelse(x %in% usa_extra1$Accession, which(x==usa_extra1$Accession),NA)))
+USA_for_study$Year = usa_extra1$Year[indexes_1]
+USA_for_study = USA_for_study[,c("Biosample Accession","Year", "Country", "PEN")]
+#Missing years for the remaining accessions
+#Paste this in terminal
+#esearch -db bioproject -query "ERR505998"
+#USA$`Biosample Accession` #Extract collection date for each biosample accesssion number
+#esearch -db pubmed -query "ERR586469 [PACC]"
+#Pubmed stores collection date as:
+#<TAG>collection date</TAG>
+#<VALUE>2009</VALUE>
+
+#Massachusetts
+#Also check what they did in the study. 
+# < 0.01 -> 0.008 <.016 -> 0.008 <=0.03 -> 0.03 <0.016 -> 0.008  <0.03 -> 0.015
+# >4 and >4.00 set to 4.
+Massachusetts = read_xlsx("/Users/magnusnygardosnes/Desktop/Postdoc/Pneumo/Massachusetts/Massachusetts_nature_genetics.xlsx")
+Massachusetts_for_study = Massachusetts[,c("Accession","Year of Isolation","Benzylpenicillin MIC (μg/mL)")]
+Massachusetts_for_study$Country = rep("Massachusetts", nrow(Massachusetts))
+Massachusetts_for_study = Massachusetts_for_study[,c(1,2,4,3)]
+
+#Norway historic.
+#1. Need a translation table for all the PG_MIC values
+# 16 (24) is probably 16
+# 2 (3) is probably 2
+# Skipping historic for contionus analysis - might need later (R,I,S). 
+Historic_for_study = Norway_historic[,c("Fasta_navn","ÅR","PG_MIC","PG_Lappediff")]
+Historic_for_study$Country=rep("Norway_historic",nrow(Historic_for_study))
+Historic_for_study = Historic_for_study[,c(1,2,5,3,4)]
+
+
+#Norway routine.
+#1. Lots of missing data.
+Routine_for_study = Norway_routine
+Routine_for_study = Routine_for_study[,c("Fasta_file","Year","PenG_MIC")]
+Routine_for_study$Country=rep("Norway_routine",nrow(Routine_for_study))
+Routine_for_study = Routine_for_study[,c(1,2,4,3)]
+table(Routine_for_study$PenG_MIC) #Missing data for 556 isolates
+
+# Combined dataset.
+# Requires data to be ordered by isolate name (fasta identifier). 
+# Rebecca suggsted that we also include the Ast_penicillin column as these affect the MIC 
+total_data = rbind(as.matrix(SA_for_study),
+                   as.matrix(Maela_for_study),
+                   as.matrix(USA_for_study),
+                   as.matrix(Massachusetts_for_study),
+                   as.matrix(Routine_for_study),
+                   as.matrix(Historic_for_study[,1:4]))
+colnames(total_data)=c("fasta_name","Date","Country", "Penicillin_MIC")
+#We are missing data on 876 + 16 isolates
+total_data=as.data.frame(total_data)
+
+```
+
+## Project summary
+
+The goal of this project is to determine mutations and factors that are involved in penicillin resistance. We have collected a data set with isolates that are susceptible, intermediate resistant and resistant to Penicillin G. We included isolates that have been analysed in previous studies in addition to new isolates from routine sequencing in Norway.
+In total the collection consists of 9316 genomes.
+
+### Isolates from Maela refuge camp
+
+The Maela collection consists of 3082 genomes.
+
+```{r remedy002}
+
 #Test
+
+ggplot(Maela_for_study)+
+  geom_bar(position="stack",aes(x=Year))+
+  theme_bw()+scale_x_binned(breaks=seq(2007,2011.5,0.5),limits=c(2007,2011.5), expand=c(0,0))+
+  scale_y_continuous(expand=c(0,0),limits=c(0,700))
+
+##GGplot is useless for piecharts.
+pie(table(Maela_for_study$`penicillin_MIC(µg/mL)`), cex=0.5,)
+
+```
+
+### Isolates from Norway
+
+From Norway we included historic isolates and isolates from routine sequencing.
+1142 isolates historic isolates:
+
+```{r}
+#Test
+labs = seq(1980,2020,1)
+labs= rep("", length(labs))
+labs[seq(1,length(labs),5)]=seq(1980,2020,5)
+labs
+ggplot(Historic_for_study,aes(x=ÅR))+
+  geom_bar(position="stack",aes(x=ÅR))+
+  theme_bw()+scale_x_binned(breaks=seq(1980,2020,1),limits=c(1980,2020), expand=c(0,0),labels =labs)+
+  scale_y_continuous(expand=c(0,0),limits=c(0,60))
+##GGplot is useless for piecharts.
+pie(table(Historic_for_study$PG_MIC), cex=0.7)
+pie(table(Historic_for_study$PG_Lappediff), cex=0.7)
+```
+
+1312 isolates from routine surveillance:
+
+```{r }
+library(ggplot2)
+#Test
+ggplot(Routine_for_study,aes(x=Year))+
+  geom_bar(position="stack",aes(x=Year))+
+  theme_bw()+scale_x_binned(breaks=seq(2017,2022,1),limits=c(2017,2022), expand=c(0,0))+
+  scale_y_continuous(expand=c(0,0),limits=c(0,500))
+##GGplot is useless for piecharts.
+pie(table(Routine_for_study$PenG_MIC), cex=0.7)
+
+```
+
+### Isolates from South Africa 
+1569 isolates from South Africa
+
+```{r }
+library(ggplot2)
+#Test
+ggplot(SA_for_study,aes(x=Year))+
+  geom_bar(position="stack",aes(x=Year))+
+  theme_bw()+scale_x_binned(breaks=seq(2003,2015,1),limits=c(2003,2015), expand=c(0,0))+
+  scale_y_continuous(expand=c(0,0),limits=c(0,400))
+##GGplot is useless for piecharts.
+pie(table(SA_for_study$Penicillin), cex=0.5)
+
+```
+
+### Isolates from the United States
+1595 isolates from the United states
+```{r}
+library(ggplot2)
+#Test
+ggplot(USA_for_study,aes(x=Year))+
+  geom_bar(stat="count",width = 1)+
+  theme_bw()
+##GGplot is useless for piecharts.
+pie(table(USA_for_study$PEN), cex=0.5)
+
+```
+
+616 isolates from Massachusetts 
+```{r}
+library(ggplot2)
+#Test
+ggplot(Massachusetts_for_study,aes(x=`Year of Isolation`))+
+  geom_bar(position="stack",aes(x=`Year of Isolation`))+
+  theme_bw()+scale_x_binned(breaks=seq(2000,2010,1),limits=c(2000,2010), expand=c(0,0))+
+  scale_y_continuous(expand=c(0,0),limits=c(0,400))
+##GGplot is useless for piecharts.
+pie(table(Massachusetts_for_study$`Benzylpenicillin MIC (μg/mL)`), cex=0.5)
+
 ```
 
 
-![Intergalactic train](intergalactic4.png "Test")
+
+
+## Total collection
+
+```{r}
+color_mapping_locations = c("Maela"="#FF7F00", "Massachusetts"="#A6CEE3", "Norway_historic"="#1F78B4",
+                            "Norway_routine"="#B2DF8A","Africa"="#33A02C","USA"="#FB9A99","nd"="black")
+labs = seq(1980,2025,1)
+labs= rep("", length(labs))
+labs[seq(1,length(labs),5)]=seq(1980,2025,5)
+labs
+
+main_plot2 = ggplot(data = total_data) +
+  geom_bar(position="stack",aes(x=as.numeric(Date), fill=Country)) + 
+  scale_fill_manual("location", values=color_mapping_locations) +
+  theme_bw()+xlab("")+ylab("Number of sequences")+theme(legend.position = "top") + 
+  scale_x_binned(breaks=seq(1980,2025,1),limits=c(1980,2025), expand=c(0,0),labels =labs)+xlab("Collection date")
+main_plot2
+```
+
+
+ <!-- ![Intergalactic train](intergalactic4.png "Test") --> 
 
