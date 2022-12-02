@@ -87,7 +87,7 @@ USA_for_study = USA_for_study[,c("Biosample Accession","Year", "Country", "PEN")
 #Also check what they did in the study. 
 # < 0.01 -> 0.008 <.016 -> 0.008 <=0.03 -> 0.03 <0.016 -> 0.008  <0.03 -> 0.015
 # >4 and >4.00 set to 4.
-Massachusetts = read_xlsx("/Users/magnusnygardosnes/Desktop/Postdoc/Pneumo/Massachusetts/Massachusetts_nature_genetics.xlsx")
+Massachusetts = read_xlsx("/Users/magnusnygardosnes/Desktop/Postdoc/Pneumo/pneumo_project_Massachusetts/Massachusetts_nature_genetics.xlsx")
 Massachusetts_for_study = Massachusetts[,c("Accession","Year of Isolation","Benzylpenicillin MIC (μg/mL)")]
 Massachusetts_for_study$Country = rep("Massachusetts", nrow(Massachusetts))
 Massachusetts_for_study = Massachusetts_for_study[,c(1,2,4,3)]
@@ -123,14 +123,34 @@ colnames(total_data)=c("fasta_name","Date","Country", "Penicillin_MIC")
 #We are missing data on 876 + 16 isolates
 total_data=as.data.frame(total_data)
 
+# Remove extra metadata
+library(stringr)
+# We removed quite a few isolates from filtering, and metadata spanned more than the isolates we used.
+# 1. define identifier in matching format for the isolates we kept
+gpsc_called = read.csv("/Users/magnusnygardosnes/Desktop/Postdoc/Pneumo/02_GPSC/call_GPSC_of_these_fasta.txt", sep="\t",header=F)
+sample_ids = str_replace(gpsc_called$V1,".fasta", "")
+# 2. define identifier in matching format for metadata
+metadata_ids = str_replace(total_data$fasta_name, ".fasta","")
+# 3. match samples ids to the metadata
+match_in_row = unlist(lapply(sample_ids, FUN = function(x) which(x == metadata_ids)))
+
+write.table(sample_ids[which((sample_ids %in% metadata_ids)==FALSE)],file = "/Users/magnusnygardosnes/Dropbox/Postdoc_pneumococcus/00_Collection_overview/remove_historic_with_missing_metadata.txt", row.names = F, quote=F,col.names = F)
+
+#Wrong metadata among these matches
+#total_data[10747:10751,]
+#total_data[10568:10572,]
+
+# 4. retain only indexes that matched in metadata.
+write.table(total_data,"~/Dropbox/Postdoc_pneumococcus/00_Collection_overview/total_metadata_processed_and_combined.csv")
+
 ```
 
 ## Project summary
 
-The goal of this project is to determine mutations and factors that are involved in penicillin resistance. We have collected a data set with isolates that are susceptible, intermediate resistant and resistant to Penicillin G. We included isolates that have been analysed in previous studies in addition to new isolates from routine sequencing in Norway.
-In total the collection consists of 9316 genomes.
-
+The goal of this project is to determine mutations and factors that are involved in penicillin resistance. We have collected a data set with isolates that are susceptible, intermediate resistant and resistant to Penicillin G. We included isolates that have been analysed in previous studies in addition to new isolates from routine sequencing in Norway. In addition, we sequenced historic isolates that have been stored at the Norwegian Institute of public health. In total the collection consists of 9316 genomes, with sampling dates and antibiotic resistance profiles summarized below.
+    
 ### Isolates from Maela refuge camp
+  
 
 The Maela collection consists of 3082 genomes.
 
@@ -158,7 +178,6 @@ From Norway we included historic isolates and isolates from routine sequencing.
 labs = seq(1980,2020,1)
 labs= rep("", length(labs))
 labs[seq(1,length(labs),5)]=seq(1980,2020,5)
-labs
 ggplot(Historic_for_study,aes(x=ÅR))+
   geom_bar(position="stack",aes(x=ÅR))+
   theme_bw()+scale_x_binned(breaks=seq(1980,2020,1),limits=c(1980,2020), expand=c(0,0),labels =labs)+
@@ -234,7 +253,6 @@ color_mapping_locations = c("Maela"="#FF7F00", "Massachusetts"="#A6CEE3", "Norwa
 labs = seq(1980,2025,1)
 labs= rep("", length(labs))
 labs[seq(1,length(labs),5)]=seq(1980,2025,5)
-labs
 
 main_plot2 = ggplot(data = total_data) +
   geom_bar(position="stack",aes(x=as.numeric(Date), fill=Country)) + 

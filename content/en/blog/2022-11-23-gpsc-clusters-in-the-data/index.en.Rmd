@@ -20,3 +20,23 @@ toc: true
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE,collapse=T, cache=T, 'styler', tidy.opts=list(strict=T))
 ```
+
+```{r remedy001, include=F}
+library(stringr)
+gpsc = read.csv("/Users/magnusnygardosnes/Desktop/Postdoc/Pneumo/02_GPSC/GPSC_assignment/GPSC_assignment_clusters.csv")
+gpsc_ids = str_replace(gpsc$Taxon,"_fasta", "")
+total_data = read.table("/Users/magnusnygardosnes/Dropbox/Postdoc_pneumococcus/00_Collection_overview/total_metadata_processed_and_combined.csv")
+total_data_ids = str_replace(total_data$fasta_name, ".fasta", "")
+match_fun = function(x) {
+  
+  if(sum((x == total_data_ids),na.rm=T)>1) {
+    print(paste0(x, " has multiple matches"))
+  }
+  which(x == total_data_ids)
+}
+matchin_inds = unlist(lapply(gpsc_ids, FUN = match_fun))
+total_data$GPSC = rep(NA, nrow(total_data))
+total_data$GPSC[matchin_inds] = gpsc$Cluster
+data_kept = total_data[matchin_inds,]
+#table(data_kept$GPSC)
+```
