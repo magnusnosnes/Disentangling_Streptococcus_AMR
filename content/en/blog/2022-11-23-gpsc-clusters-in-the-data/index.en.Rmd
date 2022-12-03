@@ -14,16 +14,37 @@ pinned: false
 homepage: false
 toc: true
 ---
+
+
 <style>
-h2 {
-  text-align: center;
+ <!-- .tabbable {
+  font-size: 8pt;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+} --> 
+
+.tab-pane {
+  font-size: 12pt;
+  margin: 20px 0;
+}
+
+.nav-pills {
+    --bs-nav-pills-border-radius: .600rem;
+    --bs-nav-pills-link-active-color: #fff;
+    --bs-nav-pills-link-active-bg: #5d2f86;
+    font-size: 8pt;
+}
+body {
+  margin: 0;
+  padding: 0;
 }
 </style>
-
 #
+# 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE,collapse=T, cache=F, 'styler', tidy.opts=list(strict=T))
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE,collapse=T, cache=F, 'styler', tidy.opts=list(strict=T), fig.width = 10,fig.height=6)
 ```
 
 ```{r remedy001, include=F}
