@@ -50,6 +50,7 @@ From Norway we included historic isolates and isolates from routine sequencing.
 1595 isolates from the United states
 <img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" /><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-4-2.png" width="672" />
 
+### Isolates from the Massachusetts
 616 isolates from Massachusetts 
 <img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-5-1.png" width="672" /><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-5-2.png" width="672" />
 

@@ -229,6 +229,7 @@ pie(table(USA_for_study$PEN), cex=0.5)
 
 ```
 
+### Isolates from the Massachusetts
 616 isolates from Massachusetts 
 ```{r}
 library(ggplot2)
