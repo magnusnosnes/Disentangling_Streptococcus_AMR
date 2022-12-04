@@ -36,12 +36,12 @@ toc: true
     font-size: 8pt;
 }
 .nav {
-    <!-- --bs-nav-link-padding-x: 1rem;
+    --bs-nav-link-padding-x: 1rem;
     --bs-nav-link-padding-y: .5rem;
     --bs-nav-link-font-weight: ;
     --bs-nav-link-color: var(--bs-link-color);
     --bs-nav-link-hover-color: var(--bs-link-hover-color);
-    --bs-nav-link-disabled-color: #6c757d; --> 
+    --bs-nav-link-disabled-color: #6c757d; 
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -227,14 +227,23 @@ Metadata$ST[nchar(Metadata$ST) > 10] <- NA
 library(plotly)
 
 make_barplot <- function(data, column, dataset) {
+  #data=Metadata; column="ST"; dataset="Norway_historic";
   #Set plot title
+  
   plot_title = dataset
+  #Remove underscore:
+  plot_title = gsub("_", " ", plot_title)
   
   # Select the rows of data with the specified dataset value
   data_subset <- data[data$dataset == dataset,]
   
   # Create a table of the values in the specified column
   value_counts <- table(data_subset[, column])
+  
+  # Sort the table and reduce it to the top 50 entries
+  value_counts <- sort(value_counts,decreasing = T)
+  value_counts <- head(value_counts, 50)
+  
   # Define the original color vector
 colors <- hcl(h = seq(15, 375, length = length(value_counts)),
               l = 65,
@@ -251,14 +260,14 @@ colors <- rep(colors, num_reps)
   max_y_value <- max(value_counts) * 1.1
   
   # Create a bar plot using the value counts
-   ggplot(data.frame("x" = names(value_counts), "y" = as.numeric(value_counts)), aes(reorder(x, desc(y)), y, fill=x))+
+   ggplot(data.frame("x" = names(value_counts), "y" = as.numeric(value_counts)), aes(reorder(x, -y),y,fill=x))+
   geom_bar(stat = "identity", position="dodge")+
     scale_fill_manual(values = colors)+
     theme_bw()+
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, size = min(0.1, 5 / 2*length(value_counts))), legend.position = "none", plot.title = element_text(hjust = 0.5))+
+   theme(legend.position = "none", plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle = 60, hjust = 1, size = 8))+
     labs(fill="")+scale_y_continuous(expand=c(0,0),limits = c(0,max_y_value))+scale_x_discrete(expand=c(0,0))+ggtitle(plot_title)+
     ylab("Counts")+
-    xlab(column)#+geom_text(aes(label = x), angle = 90, hjust = 1, cex = min(1, 10 / length(value_counts)))
+    xlab(column)
 }
 
 make_interactive_barplot <- function(data, column, dataset) {
@@ -287,8 +296,8 @@ library(shiny)
 # # Create the tabset panel
 
 tabsetPanel(
-  tabPanel("Norway_historic", make_interactive_barplot(data = Metadata, column = "Strain", dataset = "Norway_historic")),
-  tabPanel("Norway_routine", make_interactive_barplot(data = Metadata, column = "Strain", dataset = "Norway_routine")),
+  tabPanel("Norway historic", make_interactive_barplot(data = Metadata, column = "Strain", dataset = "Norway_historic")),
+  tabPanel("Norway routine", make_interactive_barplot(data = Metadata, column = "Strain", dataset = "Norway_routine")),
   tabPanel("Maela", make_interactive_barplot(data = Metadata, column = "Strain", dataset = "Maela")),
   tabPanel("Massachusetts", make_interactive_barplot(data = Metadata, column = "Strain", dataset = "massachusetts")),
   tabPanel("SouthAfrica", make_interactive_barplot(data = Metadata, column = "Strain", dataset = "SouthAfrica")),
@@ -310,8 +319,8 @@ library(shiny)
 # # Create the tabset panel
 
 tabsetPanel(
-  tabPanel("Norway_historic", make_interactive_barplot(data = Metadata, column = "Serotype", dataset = "Norway_historic")),
-  tabPanel("Norway_routine", make_interactive_barplot(data = Metadata, column = "Serotype", dataset = "Norway_routine")),
+  tabPanel("Norway historic", make_interactive_barplot(data = Metadata, column = "Serotype", dataset = "Norway_historic")),
+  tabPanel("Norway routine", make_interactive_barplot(data = Metadata, column = "Serotype", dataset = "Norway_routine")),
   tabPanel("Maela", make_interactive_barplot(data = Metadata, column = "Serotype", dataset = "Maela")),
   tabPanel("Massachusetts", make_interactive_barplot(data = Metadata, column = "Strain", dataset = "massachusetts")),
   tabPanel("SouthAfrica", make_interactive_barplot(data = Metadata, column = "Serotype", dataset = "SouthAfrica")),
@@ -334,12 +343,12 @@ library(shiny)
 # # Create the tabset panel
 
 tabsetPanel(
-  tabPanel("Norway_historic", make_interactive_barplot(data = Metadata, column = "Serotype", dataset = "Norway_historic")),
-  tabPanel("Norway_routine", make_interactive_barplot(data = Metadata, column = "Serotype", dataset = "Norway_routine")),
-  tabPanel("Maela", make_interactive_barplot(data = Metadata, column = "Serotype", dataset = "Maela")),
-  tabPanel("Massachusetts", make_interactive_barplot(data = Metadata, column = "Strain", dataset = "massachusetts")),
-  tabPanel("SouthAfrica", make_interactive_barplot(data = Metadata, column = "Serotype", dataset = "SouthAfrica")),
-  tabPanel("USA", make_interactive_barplot(data = Metadata, column = "Serotype", dataset = "USA")),
+  tabPanel("Norway historic", make_interactive_barplot(data = Metadata, column = "ST", dataset = "Norway_historic")),
+  tabPanel("Norway routine", make_interactive_barplot(data = Metadata, column = "ST", dataset = "Norway_routine")),
+  tabPanel("Maela", make_interactive_barplot(data = Metadata, column = "ST", dataset = "Maela")),
+  tabPanel("Massachusetts", make_interactive_barplot(data = Metadata, column = "ST", dataset = "massachusetts")),
+  tabPanel("SouthAfrica", make_interactive_barplot(data = Metadata, column = "ST", dataset = "SouthAfrica")),
+  tabPanel("USA", make_interactive_barplot(data = Metadata, column = "ST", dataset = "USA")),
   type="pills"
 )
 ```
