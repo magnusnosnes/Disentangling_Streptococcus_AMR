@@ -306,7 +306,7 @@ plot_data_by_country <- function(data, country) {
     scale_fill_manual(values = as.character(values[country]))+
     scale_x_binned(breaks = breaks, limits = c(mind, maxd), expand = c(0, 0))+ theme(axis.text.x = element_text(angle = 60, hjust = 1), legend.position="none")
   
-  # Under the ggplot hood:#
+  # Under the ggplot hood:
   under_the_hood = ggplot_build(g1)
   
   # Find the maximum count of observations in each bin
@@ -454,7 +454,6 @@ plot_years_stacked_country(total_data)
 ```
  
 ## Mic values individual countries
-
 ```{r}
 
 tabsetPanel(
