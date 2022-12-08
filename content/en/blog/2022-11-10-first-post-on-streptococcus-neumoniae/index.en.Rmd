@@ -426,6 +426,8 @@ plot_years_stacked_country <- function(data) {
 ## Collection dates individual countries
  
 ```{r}
+library(shiny)
+
 tabsetPanel(
   tabPanel("Norway routine", plot_data_by_country_interactive(total_data, country = "Norway_routine")),
   tabPanel("Norway historic", plot_data_by_country_interactive(total_data, country = "Norway_historic")),
@@ -435,19 +437,22 @@ tabsetPanel(
   tabPanel("USA", plot_data_by_country_interactive(total_data, country = "USA")),
   type="pills"
 )
+
 ```
  
 ## Collection dates all countries
  
 ```{r}
+
 plot_years_stacked_country(total_data)
-#
+
 ```
  
 ## MIC values individual countries
 
 
 ```{r}
+library(shiny)
 #
 tabsetPanel(
     tabPanel("Norway historic", plot_MIC_by_country_interactive(total_data, "Norway_historic")),
