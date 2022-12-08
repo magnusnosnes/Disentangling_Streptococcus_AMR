@@ -6,7 +6,7 @@ date: 2020-11-04T09:19:42+01:00
 lastmod: 2020-11-04T09:19:42+01:00
 draft: false
 weight: 50
-images: ["Samples.jpg"]
+images: ["Samples.png"]
 categories: ["News"]
 tags: []
 contributors: ["Magnus Osnes"]
@@ -448,7 +448,7 @@ plot_years_stacked_country(total_data)
 
 
 ```{r}
-
+#
 tabsetPanel(
     tabPanel("Norway historic", plot_MIC_by_country_interactive(total_data, "Norway_historic")),
     tabPanel("Norway routine", plot_MIC_by_country_interactive(total_data, "Norway_routine")),
