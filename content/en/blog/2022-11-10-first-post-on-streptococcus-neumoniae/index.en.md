@@ -138,7 +138,7 @@ The Maela collection consists of 3082 genomes.
 
 <img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
-## Mic values individual countries
+## MIC values individual countries
 
 <div class="tabbable">
 <ul class="nav nav-pills" data-tabsetid="9341">

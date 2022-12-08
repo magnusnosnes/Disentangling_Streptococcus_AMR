@@ -440,20 +440,11 @@ tabsetPanel(
 ## Collection dates all countries
  
 ```{r}
-
-
 plot_years_stacked_country(total_data)
-
-# plot_MIC_by_country(total_data, "Norway_historic")
-# plot_MIC_by_country(total_data, "Norway_routine")
-# plot_MIC_by_country(total_data, "Maela")
-# plot_MIC_by_country(total_data, "South Africa")
-# plot_MIC_by_country(total_data, "Massachusetts")
-# plot_MIC_by_country(total_data, "USA")
-
+#
 ```
  
-## Mic values individual countries
+## MIC values individual countries
 
 
 ```{r}
