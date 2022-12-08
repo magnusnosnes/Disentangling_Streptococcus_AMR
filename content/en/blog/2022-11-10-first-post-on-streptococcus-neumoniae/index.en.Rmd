@@ -454,6 +454,8 @@ plot_years_stacked_country(total_data)
 ```
  
 ## Mic values individual countries
+
+
 ```{r}
 
 tabsetPanel(
