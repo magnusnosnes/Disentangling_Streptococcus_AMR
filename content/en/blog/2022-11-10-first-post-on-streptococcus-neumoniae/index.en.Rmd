@@ -425,6 +425,8 @@ plot_years_stacked_country <- function(data) {
  
 ## Collection dates individual countries
  
+lorem ipsum
+
 ```{r}
 library(shiny)
 
@@ -442,6 +444,8 @@ tabsetPanel(
  
 ## Collection dates all countries
  
+lorem ipsum
+ 
 ```{r}
 
 plot_years_stacked_country(total_data)
@@ -450,6 +454,7 @@ plot_years_stacked_country(total_data)
  
 ## MIC values individual countries
 
+lorem ipsum
 
 ```{r}
 library(shiny)
@@ -466,7 +471,6 @@ tabsetPanel(
 
 ```
 
-#
 
 <!-- ### Isolates from Norway -->
 
