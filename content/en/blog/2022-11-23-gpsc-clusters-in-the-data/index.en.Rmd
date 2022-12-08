@@ -89,6 +89,9 @@ knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE,collapse=T, cac
 #table(data_kept$GPSC)
 ```
 
+## Outline
+The following plots presents an analysis of GPSC clusters, serotypes and MLST for the data from Norway, Maela, Massachusetts, South Africa and USA. The categories were estimated by using the [pathogenwatch](https://pathogen.watch/).
+
 ```{r, include = FALSE}
 # Load the required packages
 library(ggplot2)
