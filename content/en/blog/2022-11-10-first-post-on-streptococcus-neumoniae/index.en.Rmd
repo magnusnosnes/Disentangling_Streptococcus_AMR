@@ -392,7 +392,7 @@ plot_years_stacked_country <- function(data) {
     theme_bw() +
     stat_bin(aes(x = Date), breaks = breaks) +
     scale_fill_manual(values=c("#0074D9", "#FF4136", "#2ECC40", "#FF851B", "#7FDBFF", "#B10DC9"),
-                    labels=c("Maela", "Massachusetts", "Norway routine", "Norway historic", "South Africa", "USA"))+
+                    labels=c("Maela", "Massachusetts", "Norway historic", "Norway routine", "South Africa", "USA"))+
     scale_x_binned(breaks = breaks, limits = c(mind, maxd), expand = c(0, 0))+ theme(axis.text.x = element_text(angle = 60, hjust = 1), legend.position="top")
   
   # Under the ggplot hood:
@@ -422,7 +422,6 @@ plot_years_stacked_country <- function(data) {
  
 ## Collection dates individual countries
  
-lorem ipsum
 
 ```{r}
 library(shiny)
@@ -441,7 +440,6 @@ tabsetPanel(
  
 ## Collection dates all countries
  
-lorem ipsum
  
 ```{r}
 
@@ -451,7 +449,6 @@ plot_years_stacked_country(total_data)
  
 ## MIC values individual countries
 
-lorem ipsum
 
 ```{r}
 library(shiny)
