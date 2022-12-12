@@ -260,9 +260,6 @@ write.table(total_data,"~/Dropbox/Postdoc_pneumococcus/00_Collection_overview/to
 
 The goal of this project is to determine mutations and factors that are involved in penicillin resistance. We have collected a data set with isolates that are susceptible, intermediate resistant and resistant to Penicillin G. We included isolates that have been analysed in previous studies in addition to new isolates from routine sequencing in Norway. In addition, we sequenced historic isolates that have been stored at the Norwegian Institute of public health. In total the collection consists of 9316 genomes, with sampling dates and antibiotic resistance profiles summarized below.
     
-### Isolates from Maela refuge camp
-  
-The Maela collection consists of 3082 genomes.
 
 ```{r}
 library(shiny)
@@ -362,7 +359,7 @@ plot_MIC_by_country <- function(data, country) {
   theme_bw()+scale_fill_manual(values = c("Susceptible" = "blue", "Non-susceptible" = "red", "Resistant" = "dark red"),
                                labels=c("Susceptible","Non-susceptible","Resistant"))+xlab("Penicilling G MIC")+
     labs(fill = "Resistance category")+xlab("MIC")+ylab("Number of isolates")+
-    theme(legend.position = "top", axis.text.x = element_text(angle = 60, hjust = 1))
+    theme(legend.position = "none", axis.text.x = element_text(angle = 60, hjust = 1))
   g1
 }
 
@@ -471,6 +468,7 @@ tabsetPanel(
 
 ```
 
+![](legendMIC.png){.figure .align-center}
 
 <!-- ### Isolates from Norway -->
 
